@@ -7,6 +7,7 @@ const SignInForm = () => {
 	const [submitted, setSubmitted] = useState(false);
 
 	useEffect(() => {
+		console.log("useEffect");
 		const sendData = async () => {
 			try {
 				const response = await fetch("http://localhost:3000/auth/signin", {
@@ -18,7 +19,7 @@ const SignInForm = () => {
 				});
 				const apiResponse = await response.json();
 				console.log("reponse de la requete post:", apiResponse);
-                localStorage.setItem('jwt', apiResponse.message)
+				localStorage.setItem("jwt", apiResponse.message);
 			} catch (error) {
 				console.error(
 					"Erreur lors de l'envoi de la requête POST :",
@@ -26,10 +27,10 @@ const SignInForm = () => {
 				);
 			}
 		};
-        if(submitted) {
-            sendData();
-            setTimeout(() => setSubmitted(false), 3000);
-        }
+		if (submitted) {
+			sendData();
+			setTimeout(() => setSubmitted(false), 3000);
+		}
 	}, [data]);
 
 	const handleSubmit = (e) => {
@@ -42,7 +43,8 @@ const SignInForm = () => {
 		};
 
 		setData(formData);
-        setSubmitted(true)
+		setSubmitted(true);
+
 		console.log("formData :", formData);
 	};
 
