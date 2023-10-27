@@ -14,7 +14,8 @@ const SignInForm2 = () => {
 				.email("Adresse email non valide"),
 			password: Yup.string()
 				.required("Mot de passe requis")
-				.min(4, "Le mot de passe doit comporter au moins 4 caractères"),
+				.min(4, "Le mot de passe doit comporter au moins 4 caractères")
+                .max(15, "C'est tres long mon pote!"),
 		}),
 		onSubmit: (values) => {
 			console.log("Formulaire ok");
@@ -35,6 +36,9 @@ const SignInForm2 = () => {
 						onBlur={formik.handleBlur}
 						value={formik.values.email}
 					/>
+                    {formik.touched.email && formik.errors.email ? (
+                        <div style={style.red}>{formik.errors.email}</div>
+                    ) : null}
 				</div>
 				<div>
 					<label>Mot de passe</label>
@@ -45,11 +49,20 @@ const SignInForm2 = () => {
 						onBlur={formik.handleBlur}
 						value={formik.values.password}
 					/>
+                    {formik.touched.password && formik.errors.password ? (
+                        <div style={style.red}>{formik.errors.password}</div>
+                    ) : null}
 				</div>
 				<button type='submit'>Me connecter</button>
 			</form>
 		</div>
 	);
+};
+
+const style = {
+    red: {
+        color: "red"
+    }
 };
 
 export default SignInForm2;
