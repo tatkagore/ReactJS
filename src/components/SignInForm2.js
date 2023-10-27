@@ -20,8 +20,30 @@ const SignInForm2 = () => {
 		onSubmit: (values) => {
 			console.log("Formulaire ok");
 			console.log(values);
+            //handler submit 
+            handleAuthentication(values);
 		},
 	});
+
+    const handleAuthentication = async (values) => {
+        try {
+            const response = await fetch('http://localhost:3000/auth/signin', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(values),
+            });
+            if(response.ok) {
+                const { jwt } = await response.json()
+                localStorage.setItem('jwt', jwt)
+            } else {
+                console.error("Authentication failed");
+            }
+        } catch (error) {
+            console.error('Erreur lors de l\'authentification:', error)
+        }
+    }
 
 	return (
 		<div>
