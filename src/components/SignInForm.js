@@ -3,23 +3,48 @@ import React, { useState, useEffect } from "react";
 const SignInForm = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-    const [submitted, setSubmitted] = useState(false);
-    const [data, setData] = useState({});
+	const [data, setData] = useState({});
+	const [submitted, setSubmitted] = useState(false);
 
-    useEffect(() => {});
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log("submit ok");
-
-        const formData = {
-            email: email, 
-            password: password
+	useEffect(() => {
+		const sendData = async () => {
+			try {
+				const response = await fetch("http://localhost:3000/auth/signin", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(data),
+				});
+				const apiResponse = await response.json();
+				console.log("reponse de la requete post:", apiResponse);
+                localStorage.setItem('jwt', apiResponse.message)
+			} catch (error) {
+				console.error(
+					"Erreur lors de l'envoi de la requête POST :",
+					error
+				);
+			}
+		};
+        if(submitted) {
+            sendData();
+            setTimeout(() => setSubmitted(false), 3000);
         }
-        setData(formData);
+	}, [data]);
 
-        console.log("data: ", formData);
-    };
+	const handleSubmit = (e) => {
+		e.preventDefault(); // Bloquer le rechargement de la page
+		console.log("submit ok");
+
+		const formData = {
+			email: email,
+			password: password,
+		};
+
+		setData(formData);
+        setSubmitted(true)
+		console.log("formData :", formData);
+	};
 
 	return (
 		<div className='signinform'>
@@ -41,7 +66,7 @@ const SignInForm = () => {
 						onChange={(e) => setPassword(e.target.value)}
 					/>
 				</div>
-				<button>Me connecter</button>
+				<button type='submit'>Me connecter</button>
 			</form>
 		</div>
 	);
