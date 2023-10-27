@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 
+import Image from "./Image";
+
+import styles from "../styles";
+
 const RickAndMorty = () => {
 	const [data, setData] = useState([]);
 	const [filteredData, setFilteredData] = useState([]);
@@ -57,28 +61,20 @@ const RickAndMorty = () => {
 						</button>
 						<button onClick={handleReset}>Reset</button>
 					</div>
-					{filteredData.map((character) => (
-						<div style={styles.card} key={character.id}>
-							<img src={character.image} />
-							{/* <Image src={character.image} /> */}
-							<p>
-								{character.name} - {character.status}
-							</p>
-						</div>
-					))}
+					<div style={styles.container}>
+						{filteredData.map((character) => (
+							<div style={styles.card} key={character.id}>
+								<Image source={character.image} />
+								<p>
+									{character.name} - {character.status}
+								</p>
+							</div>
+						))}
+					</div>
 				</div>
 			)}
 		</div>
 	);
-};
-
-const styles = {
-	card: {
-		border: "1px solid #F7F7F7",
-		borderRadius: 5,
-		margin: 15,
-		padding: 15,
-	},
 };
 
 export default RickAndMorty;
